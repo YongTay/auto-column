@@ -1,6 +1,6 @@
 {
   "name": "auto-column",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": false,
   "description": "这是一个针对element-ui表格（table）自适应宽度的包",
   "main": "./dist/auto-column.js",
