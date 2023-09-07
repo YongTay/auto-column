@@ -140,8 +140,9 @@ function getWidth(instance, list, columns) {
 
 
 const autoColumn = {
-    bind() {
+    bind(el, binding, vnode, oldnode) {
         binded = false
+        autoWidth(el, binding, vnode, oldnode)
     },
     update(el, binding, vnode, oldnode) {
         autoWidth(el, binding, vnode, oldnode)
