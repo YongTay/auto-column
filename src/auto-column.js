@@ -33,10 +33,10 @@ function getElHeader(instance) {
         const ch = children[i]
         const el = ch.$el
         const classList = [...el.classList]
-        if(classList.includes('el-table__header')) {
+        if (classList.includes('el-table__header')) {
             return ch
         }
-    } 
+    }
 }
 
 // 根据表头获取宽度
@@ -68,6 +68,16 @@ function getVW(instance) {
 // 自动设置宽度
 function setWidth(instance, columns, widthMap, headerWidthMap, vw) {
     let sum = 0
+    // 收集表头节点
+    const classListMap = {}
+    instance.$children.forEach(ch => {
+        if ('columnId' in ch) {
+            if (ch.$el.classList.length > 0) {
+                classListMap[ch.columnId] = [...ch.$el.classList]
+            }
+        }
+    })
+
     const targetWidthMap = {}
     for (const id in widthMap) {
         targetWidthMap[id] = widthMap[id] > headerWidthMap[id] ? widthMap[id] : headerWidthMap[id]
@@ -75,7 +85,7 @@ function setWidth(instance, columns, widthMap, headerWidthMap, vw) {
         sum += targetWidthMap[id]
     }
 
-    
+
     let span = 0
     if (sum < vw) {
         span = (vw - sum) / columns.length
@@ -83,8 +93,13 @@ function setWidth(instance, columns, widthMap, headerWidthMap, vw) {
 
     columns.forEach(col => {
         const prop = col.id
-        const width = targetWidthMap[prop]
-        instance.$set(col, 'width', width + span) // 加一个像素点解决宽度不足导致出现“.”的问题
+        const classList = classListMap[col.id]
+        // 过滤掉ignore的列
+        if (classList && classList.includes('v-auto-ignore')) {
+        } else {
+            const width = targetWidthMap[prop]
+            instance.$set(col, 'width', width + span) // 加一个像素点解决宽度不足导致出现“.”的问题
+        }
     })
 
     instance.$nextTick(() => {
