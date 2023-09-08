@@ -16,7 +16,9 @@ function autoWidth(el, binding, vnode, oldnode) {
         const haderColumn = getHeaderColumn(headerInstance)
         const headerWidthMap = getHeaderWidth(headerInstance, haderColumn)
         const vw = getVW(instance)
-        setWidth(instance, columns, widthMap, headerWidthMap, vw)
+        if (vw) {
+            setWidth(instance, columns, widthMap, headerWidthMap, vw)
+        }
     }
     resetWidth0()
     if (!binded) {
@@ -58,7 +60,7 @@ function getHeaderWidth(instance, haderColumn) {
 // 获取表格外的可视宽度
 function getVW(instance) {
     const parent = instance.$parent
-    const vw = parent.$el.offsetWidth
+    const vw = parent.$el?.offsetWidth
     if (vw === 0) {
         return getVW(parent)
     }
