@@ -1,6 +1,6 @@
 {
   "name": "auto-column",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "private": false,
   "description": "这是一个针对element-ui表格（table）自适应宽度的包",
   "main": "./dist/auto-column.js",
@@ -28,5 +28,11 @@
   "devDependencies": {
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0"
+  },
+  "dependencies": {
+    "@babel/core": "^7.22.17",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.22.15",
+    "babel-loader": "^9.1.3"
   }
 }

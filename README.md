@@ -2,11 +2,24 @@
 element-ui table 列宽自适应宽度
 
 ## 使用方式
-### 1.引入
+
+### 引入
+#### 1. 不使用全局配置参数
 ```javascript
 import AutoColumn from 'auto-column'
 Vue.use(AutoColumn)
 ```
+
+
+#### 1.1 使用引入全局配置参数
+> * minWidth: 列最小宽度
+> * maxWidth: 列最大宽度
+
+```javascript
+import AutoColumn from 'auto-column'
+Vue.use(AutoColumn, { minWidth: 80, maxWidth: 100 })
+```
+
 ### 2.使用
 ```vue
 <el-table v-auto-column :data="list" >

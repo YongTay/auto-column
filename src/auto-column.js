@@ -1,20 +1,31 @@
 
 let resetWidth
 let binded = false
+let options = {
+    minWidth: undefined,
+    maxWidth: undefined
+}
 
 function autoWidth(el, binding, vnode, oldnode) {
     const instance = vnode.componentInstance
-    const columns = instance.columns
     const data = instance.data
     const oldData = vnode.oldValue
     if (data === oldData) {
         return
     }
     const resetWidth0 = () => {
+        // 再次获取参数，处理多次点击时，获取的数据不准确问题
+        const instance = vnode.componentInstance
+        const columns = instance.columns
+        const data = instance.data
+        const oldData = vnode.oldValue
+        if (data === oldData) {
+            return
+        }
         const widthMap = getWidth(el, data, columns)
         const headerInstance = getElHeader(instance)
-        const haderColumn = getHeaderColumn(headerInstance)
-        const headerWidthMap = getHeaderWidth(headerInstance, haderColumn)
+        const headerColumn = getHeaderColumn(headerInstance)
+        const headerWidthMap = getHeaderWidth(headerInstance, headerColumn)
         const vw = getVW(instance)
         if (vw) {
             setWidth(instance, columns, widthMap, headerWidthMap, vw)
@@ -132,17 +143,29 @@ function getWidth(instance, list, columns) {
             const w = ele.offsetWidth
             width = w > width ? w : width
         })
+        width = applyOptions(width, column)
         widthMap[column.id] = width
     })
     parent.removeChild(ele)
     return widthMap
 }
 
-
+function applyOptions(width, column) {
+    const minWidth = options.minWidth
+    if (minWidth) {
+        width = width < minWidth ? minWidth - 1 : width
+    }
+    const maxWidth = options.maxWidth
+    if (maxWidth) {
+        width = width > maxWidth ? maxWidth - 1 : width
+    }
+    return width
+}
 
 
 const autoColumn = {
     bind(el, binding, vnode, oldnode) {
+        options = { ...autoColumn.options }
         binded = false
         autoWidth(el, binding, vnode, oldnode)
     },
